@@ -12,7 +12,17 @@
 <header>
     <nav>
         <ul>
-            <li><a href="#"><strong>Classic Models</strong></a></li>
+            <li><a href="/"><strong>Classic Models</strong></a></li>
+        </ul>
+        <ul>
+            <?php if (!empty($_SESSION['user']['username'])) {
+                echo '<li>'. 'Bonjour ' . $_SESSION['user']['username'] . '</li>';
+                echo '<li>'. 'Logout' . '</li>';
+            } else {
+               echo '<li><a href="/register.php">' . 'Register' . '</a></li>';
+               echo '<li><a href="/login.php">' . 'Login' . '</a></li>';
+            }
+            ?>
         </ul>
     </nav>
 </header>
