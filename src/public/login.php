@@ -2,12 +2,10 @@
 
 session_start();
 
-print_r($_POST);
 if (empty($_POST)) {
     include 'public/views/layout/header.view.php';
     include 'public/views/login.view.php';
     include 'public/views/layout/footer.view.php';
-    echo 'lol';
 }else {
     try {
 
@@ -23,20 +21,18 @@ if (empty($_POST)) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             print_r($user);
             print_r($_POST);
+
             if ($user && password_verify($_POST['password'], $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user']['username'] = $user['username'];
                 header('location: index.php');
                 exit;
             } else {
-                echo "Invalid login";
+                echo "Login invalide";
             }
         } else {
-            echo 'ça va pas';
+            echo 'remplir tous les champs';
         }
-        include 'public/views/layout/header.view.php';
-        include 'public/views/login.view.php';
-        include 'public/views/layout/footer.view.php';
     } catch (Exception $e){
         print_r($e->getMessage());
     }
