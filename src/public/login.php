@@ -14,15 +14,23 @@ if (empty($_POST)) {
         require_once 'public/db/connection.php';
 
         $username = htmlspecialchars($_POST['username']);
-        $password = filter_input($_POST['password'], FILTER_SANITIZE_NUMBER_INT);
 
         if (isset($_POST['username']) && isset($_POST['password'])) {
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
 
             $stmt->execute();
-            echo 'ça fonctionne';
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            print_r($user);
+            print_r($_POST);
+            if ($user && password_verify($_POST['password'], $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user']['username'] = $user['username'];
+                header('location: index.php');
+                exit;
+            } else {
+                echo "Invalid login";
+            }
         } else {
             echo 'ça va pas';
         }
